@@ -10,15 +10,56 @@ size = 4
 
 
 def end_check(matrix, size):
-    return False
+    for i in range(size - 1):
+        for j in range(size - 1):
+            if matrix[i][j] == 0:
+                return False
+            if matrix[i][j] == matrix[i][j + 1]:
+                return False
+            if matrix[i][j] == matrix[i + 1][j]:
+                return False
+    for i in range(size - 1):
+        if matrix[size - 1][i] == 0 or matrix[i][size - 1] == 0:
+            return False
+        if matrix[size - 1][i] == matrix[size - 1][i + 1]:
+            return False
+        if matrix[i][size - 1] == matrix[i + 1][size - 1]:
+            return False
+    if matrix[size - 1][size - 1] == 0:
+        return False
+    return True
 
 
 def win_check(matrix, size):
+    for i in range(size):
+        for j in range(size):
+            if matrix[i][j] == 2048:
+                return True
     return False
 
 
 def generate_points():
-    print(1)
+    global size
+    countZeros = 0
+    for i in range(size):
+        for j in range(size):
+            if matrix1[i][j] == 0:
+                countZeros += 1
+    ZeroNumber = randint(1, countZeros)
+    number = 0
+    if randint(1, 8) == 8:
+        newNumeric = 4
+    else:
+        newNumeric = 2
+    for i in range(size):
+        for j in range(size):
+            if matrix1[i][j] == 0:
+                number += 1
+                if number == ZeroNumber:
+                    matrix1[i][j] = newNumeric
+                    break
+        if number == ZeroNumber:
+            break
 
 
 def generate_matrix():
@@ -216,6 +257,7 @@ window.title("2048")
 w = (window.winfo_screenwidth()-300)//2
 h = (window.winfo_screenheight()-420)//2
 window.geometry(f'300x420+{w}+{h}')
+window.resizable(False, False)
 matrix1 = generate_matrix()
 canvas = tk.Canvas(window, width=245, height=245, bg="gray")
 paint()
