@@ -9,23 +9,41 @@ flag = False
 size = 4
 
 
+def size4():
+    global size
+    size = 4
+    restart()
+
+
+def size5():
+    global size
+    size = 5
+    restart()
+
+
+def size6():
+    global size
+    size = 6
+    restart()
+
+
 def end_check(matrix, size):
-    for i in range(size - 1):
-        for j in range(size - 1):
+    for i in range(size-1):
+        for j in range(size-1):
             if matrix[i][j] == 0:
                 return False
             if matrix[i][j] == matrix[i][j + 1]:
                 return False
             if matrix[i][j] == matrix[i + 1][j]:
                 return False
-    for i in range(size - 1):
-        if matrix[size - 1][i] == 0 or matrix[i][size - 1] == 0:
+    for i in range(size-1):
+        if matrix[size-1][i] == 0 or matrix[i][size-1] == 0:
             return False
-        if matrix[size - 1][i] == matrix[size - 1][i + 1]:
+        if matrix[size-1][i] == matrix[size-1][i + 1]:
             return False
-        if matrix[i][size - 1] == matrix[i + 1][size - 1]:
+        if matrix[i][size-1] == matrix[i + 1][size-1]:
             return False
-    if matrix[size - 1][size - 1] == 0:
+    if matrix[size-1][size-1] == 0:
         return False
     return True
 
@@ -235,14 +253,27 @@ def down():
 
 
 def paint():
+    global size
+    length = 56
+    space = 5
+    f = 14
+    if size == 5:
+        length = 45
+        space = 4
+        f = 12
+    elif size == 6:
+        length = 38
+        space = 3
+        f = 10
     canvas.delete("all")
-    for i in range(1, size + 1):
-        for j in range(1, size + 1):
+    for i in range(1, size+1):
+        for j in range(1, size+1):
             if matrix1[i - 1][j - 1] != 0:
-                canvas.create_rectangle(5 * j + 55 * (j - 1), 5 * i + 55 * (i - 1), 5 * j + 55 * j, 5 * i + 55 * i,
-                                        fill="white")
-                canvas.create_text(5 * j + 55 * (j - 1) + 28, 5 * i + 55 * (i - 1) + 28, text=matrix1[i - 1][j - 1],
-                                   font="calibre", justify="center", fill="black")
+                canvas.create_rectangle(space * j + length * (j - 1), space * i + length * (i - 1),
+                                        space * j + length * j, space * i + length * i, fill="white")
+                canvas.create_text(space * j + length * (j - 1) + (length-1)//2+1, space * i + length * (i - 1) +
+                                   (length-1)//2+1, text=matrix1[i-1][j-1], font=f"calibre {f}", justify="center",
+                                   fill="black")
     canvas.pack()
     if game_end:
         messagebox.showinfo("Информация о игре", "Игра окончена")
@@ -256,19 +287,25 @@ window = tk.Tk()
 window.title("2048")
 w = (window.winfo_screenwidth()-300)//2
 h = (window.winfo_screenheight()-420)//2
-window.geometry(f'300x420+{w}+{h}')
+window.geometry(f'300x480+{w}+{h}')
 window.resizable(False, False)
 matrix1 = generate_matrix()
-canvas = tk.Canvas(window, width=245, height=245, bg="gray")
+canvas = tk.Canvas(window, width=249, height=249, bg="gray")
 paint()
 btn1 = tk.Button(window, text="Вверх", bg="green", command=up)
-btn1.place(x=100, y=250, width=100, height=50)
+btn1.place(x=100, y=255, width=100, height=50)
 btn2 = tk.Button(window, text="Вниз", bg="green", command=down)
-btn2.place(x=100, y=305, width=100, height=50)
+btn2.place(x=100, y=310, width=100, height=50)
 btn3 = tk.Button(window, text="Влево", bg="green", command=left)
-btn3.place(x=45, y=250, width=50, height=105)
+btn3.place(x=45, y=255, width=50, height=105)
 btn4 = tk.Button(window, text="Вправо", bg="green", command=right)
-btn4.place(x=205, y=250, width=50, height=105)
+btn4.place(x=205, y=255, width=50, height=105)
 btn5 = tk.Button(window, text="Перезапустить игру", bg="green", command=restart)
-btn5.place(x=45, y=360, width=210, height=50)
+btn5.place(x=45, y=365, width=210, height=50)
+btn6 = tk.Button(window, text="4x4", bg="green", command=size4)
+btn6.place(x=45, y=420, width=66, height=50)
+btn7 = tk.Button(window, text="5x5", bg="green", command=size5)
+btn7.place(x=117, y=420, width=66, height=50)
+btn8 = tk.Button(window, text="6x6", bg="green", command=size6)
+btn8.place(x=189, y=420, width=66, height=50)
 window.mainloop()
